@@ -43,6 +43,10 @@ public class ProyekService {
         return proyekRepository.findAll();
     }
 
+    public Optional<Proyek> getProyekById(Integer id) {
+        return proyekRepository.findById(id);
+    }
+
     public Optional<Proyek> updateProyek(Integer id, ProyekDTO proyekDTO) {
         return proyekRepository.findById(id).map(proyek -> {
             proyek.setNamaProyek(proyekDTO.getNamaProyek());

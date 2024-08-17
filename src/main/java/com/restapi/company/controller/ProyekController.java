@@ -28,11 +28,18 @@ public class ProyekController {
         return ResponseEntity.ok(proyekService.getAllProyek());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Proyek> getProyekById(@PathVariable Integer id) {
+        return proyekService.getProyekById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Proyek> updateProyek(@PathVariable Integer id, @RequestBody ProyekDTO proyekDTO) {
         return proyekService.updateProyek(id, proyekDTO)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
