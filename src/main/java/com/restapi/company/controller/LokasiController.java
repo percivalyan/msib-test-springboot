@@ -28,11 +28,18 @@ public class LokasiController {
         return ResponseEntity.ok(lokasiService.getAllLokasi());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Lokasi> getLokasiById(@PathVariable Integer id) {
+        return lokasiService.getLokasiById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Lokasi> updateLokasi(@PathVariable Integer id, @RequestBody LokasiDTO lokasiDTO) {
         return lokasiService.updateLokasi(id, lokasiDTO)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

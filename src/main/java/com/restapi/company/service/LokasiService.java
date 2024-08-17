@@ -29,6 +29,10 @@ public class LokasiService {
         return lokasiRepository.findAll();
     }
 
+    public Optional<Lokasi> getLokasiById(Integer id) {
+        return lokasiRepository.findById(id);
+    }
+
     public Optional<Lokasi> updateLokasi(Integer id, LokasiDTO lokasiDTO) {
         return lokasiRepository.findById(id).map(lokasi -> {
             lokasi.setNamaLokasi(lokasiDTO.getNamaLokasi());
