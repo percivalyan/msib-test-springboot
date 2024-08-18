@@ -2,8 +2,12 @@ package com.restapi.company.entity;
 
 import lombok.Data;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
 @Entity
@@ -21,10 +25,14 @@ public class Proyek {
     private String client;
 
     @Column(name = "tgl_mulai", nullable = false)
-    private LocalDateTime tglMulai;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private Date tglMulai;
 
     @Column(name = "tgl_selesai", nullable = false)
-    private LocalDateTime tglSelesai;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private Date tglSelesai;
 
     @Column(name = "pimpinan_proyek", nullable = false)
     private String pimpinanProyek;
@@ -33,13 +41,10 @@ public class Proyek {
     private String keterangan;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToMany
-    @JoinTable(
-        name = "proyek_lokasi",
-        joinColumns = @JoinColumn(name = "proyek_id"),
-        inverseJoinColumns = @JoinColumn(name = "lokasi_id")
-    )
+    @JoinTable(name = "proyek_lokasi", joinColumns = @JoinColumn(name = "proyek_id"), inverseJoinColumns = @JoinColumn(name = "lokasi_id"))
     private Set<Lokasi> lokasiSet;
 }
