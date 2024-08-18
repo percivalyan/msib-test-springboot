@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.restapi.company.dto.ProyekDTO;
+import com.restapi.company.entity.Lokasi;
 import com.restapi.company.entity.Proyek;
 import com.restapi.company.service.ProyekService;
 
@@ -31,15 +32,20 @@ public class ProyekController {
     @GetMapping("/{id}")
     public ResponseEntity<Proyek> getProyekById(@PathVariable Integer id) {
         return proyekService.getProyekById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/lokasi")
+    public ResponseEntity<List<Lokasi>> getLokasiByProyekId(@PathVariable Integer id) {
+        return ResponseEntity.ok(proyekService.getLokasiByProyekId(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Proyek> updateProyek(@PathVariable Integer id, @RequestBody ProyekDTO proyekDTO) {
         return proyekService.updateProyek(id, proyekDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

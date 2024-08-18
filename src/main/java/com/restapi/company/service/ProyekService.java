@@ -9,10 +9,12 @@ import com.restapi.company.entity.Proyek;
 import com.restapi.company.repository.LokasiRepository;
 import com.restapi.company.repository.ProyekRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProyekService {
@@ -22,6 +24,7 @@ public class ProyekService {
 
     @Autowired
     private LokasiRepository lokasiRepository;
+    
 
     public Proyek createProyek(ProyekDTO proyekDTO) {
         Proyek proyek = new Proyek();
@@ -45,6 +48,13 @@ public class ProyekService {
 
     public Optional<Proyek> getProyekById(Integer id) {
         return proyekRepository.findById(id);
+    }
+
+    public List<Lokasi> getLokasiByProyekId(Integer id) {
+        return proyekRepository.findById(id)
+            .map(Proyek::getLokasiSet)
+            .map(ArrayList::new)  // Convert Set to List
+            .orElse(new ArrayList<>());
     }
 
     public Optional<Proyek> updateProyek(Integer id, ProyekDTO proyekDTO) {
