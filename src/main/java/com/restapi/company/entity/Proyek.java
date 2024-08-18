@@ -3,8 +3,8 @@ package com.restapi.company.entity;
 import lombok.Data;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,14 +25,12 @@ public class Proyek {
     private String client;
 
     @Column(name = "tgl_mulai", nullable = false)
-    @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date tglMulai;
+    private LocalDate tglMulai;
 
     @Column(name = "tgl_selesai", nullable = false)
-    @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date tglSelesai;
+    private LocalDate tglSelesai;
 
     @Column(name = "pimpinan_proyek", nullable = false)
     private String pimpinanProyek;
