@@ -1,6 +1,8 @@
 package com.restapi.company.controller;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,10 +32,14 @@ public class ProyekController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Proyek> getProyekById(@PathVariable Integer id) {
-        return proyekService.getProyekById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getProyekById(@PathVariable Integer id) {
+        Optional<Proyek> proyek = proyekService.getProyekById(id);
+        if (proyek.isPresent()) {
+            return ResponseEntity.ok(proyek.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No project found with the specified ID: " + id);
+        }
     }
 
     @GetMapping("/{id}/lokasi")
@@ -44,13 +50,13 @@ public class ProyekController {
     @PutMapping("/{id}")
     public ResponseEntity<Proyek> updateProyek(@PathVariable Integer id, @RequestBody ProyekDTO proyekDTO) {
         return proyekService.updateProyek(id, proyekDTO)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProyek(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteProyek(@PathVariable Integer id) {
         proyekService.deleteProyek(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Successfully deleted the project with ID: " + id);
     }
 }

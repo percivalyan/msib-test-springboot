@@ -1,6 +1,8 @@
 package com.restapi.company.controller;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +31,14 @@ public class LokasiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Lokasi> getLokasiById(@PathVariable Integer id) {
-        return lokasiService.getLokasiById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getLokasiById(@PathVariable Integer id) {
+        Optional<Lokasi> lokasi = lokasiService.getLokasiById(id);
+        if (lokasi.isPresent()) {
+            return ResponseEntity.ok(lokasi.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No location found with the specified ID: " + id);
+        }
     }
 
     @PutMapping("/{id}")
@@ -43,8 +49,8 @@ public class LokasiController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLokasi(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteLokasi(@PathVariable Integer id) {
         lokasiService.deleteLokasi(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Successfully deleted the project with ID: " + id);
     }
 }
